@@ -95,5 +95,5 @@ def get_htb_top_100(limit):
                 total_owns = data['root_owns'] + data['user_owns'] + data['challenge_owns'] + data['fortress'] + data['endgames']
                 bloods = data['root_bloods'] + data['user_bloods'] + data['challenge_bloods']
                 fd = {'rank': rank, 'points': points, 'id': user_id, 'name': name, 'country': country, 'owns': total_owns, 'bloods': bloods}
-                formatted_data.wwwend(fd)
+                formatted_data.append(fd)
         return formatted_data
