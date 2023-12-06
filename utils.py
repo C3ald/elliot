@@ -12,6 +12,7 @@ https://documenter.getpostman.com/view/13129365/TVeqbmeq#auth-info-60b37e03-af60
 team_url = 'https://www.hackthebox.com/api/v4/team/info/'
 profile_overview = 'https://www.hackthebox.com/api/v4/profile/'
 top_100_global = "https://www.hackthebox.com/api/v4/rankings/users"
+base_HTB_url = 'https://www.hackthebox.com'
 # Misc urls
 meme_url = 'https://meme-api.com/gimme'
 db.truncate() # for debugging and creation
@@ -52,8 +53,9 @@ def get_user_info_username(user_name):
         respects = profile_info['respects']
         bloods = profile_info['user_bloods'] + profile_info['system_bloods']
         global_ranking = profile_info['ranking']
+        avatar = base_HTB_url + profile_info['avatar']
         print(profile_info)
-        data = {'name': name, 'rank': rank, 'completion': completion, 'rank progress': progress, 'points': points, 'respects': respects, 'bloods': bloods, 'global rank': global_ranking}
+        data = {'avatar':avatar,'name': name, 'rank': rank, 'completion': completion, 'rank progress': progress, 'points': points, 'respects': respects, 'bloods': bloods, 'global rank': global_ranking}
         return data
 
 
