@@ -8,7 +8,6 @@ db = TinyDB('db.json')
 HTB API requests and handling. Maybe some other things too 😉, HTB API docs: 
 https://documenter.getpostman.com/view/13129365/TVeqbmeq#auth-info-60b37e03-af60-45c1-ad84-fb879f80cc65
 """
-db.t
 # HTB URLs
 team_url = 'https://www.hackthebox.com/api/v4/team/info/'
 profile_overview = 'https://www.hackthebox.com/api/v4/profile/'
