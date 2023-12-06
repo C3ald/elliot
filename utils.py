@@ -50,7 +50,10 @@ def get_user_info_username(user_name):
         completion = profile_info['rank_ownership']
         points = profile_info['points']
         respects = profile_info['respects']
-        data = {'name': name, 'rank': rank, 'completion': completion, 'rank progress': progress, 'points': points, 'respects': respects}
+        bloods = profile_info['user_bloods'] + profile_info['system_bloods']
+        global_ranking = profile_info['ranking']
+        print(profile_info)
+        data = {'name': name, 'rank': rank, 'completion': completion, 'rank progress': progress, 'points': points, 'respects': respects, 'bloods': bloods, 'global rank': global_ranking}
         return data
 
 
