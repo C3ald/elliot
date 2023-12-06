@@ -8,14 +8,14 @@ db = TinyDB('db.json')
 HTB API requests and handling. Maybe some other things too 😉, HTB API docs: 
 https://documenter.getpostman.com/view/13129365/TVeqbmeq#auth-info-60b37e03-af60-45c1-ad84-fb879f80cc65
 """
-
+db.t
 # HTB URLs
 team_url = 'https://www.hackthebox.com/api/v4/team/info/'
 profile_overview = 'https://www.hackthebox.com/api/v4/profile/'
 top_100_global = "https://www.hackthebox.com/api/v4/rankings/users"
 # Misc urls
 meme_url = 'https://meme-api.com/gimme'
-
+db.truncate() # for debugging and creation
 # HTB API token
 HTB_API = open('htb_token.txt', 'r').read()
 db.insert({'name': 'Ceald', 'id': 440221})
@@ -43,10 +43,16 @@ def get_user_info_username(user_name):
         url = profile_overview+str(user_id)
         print(url)
         re = r.get(url, headers=headers)
-        response = re.text
-        print(response)
-        
-                
+        response = dict(re.json())
+        profile_info = response['profile']
+        name = profile_info['name']
+        rank = profile_info['rank']
+        progress = profile_info['current_rank_progress']
+        completion = profile_info['rank_ownership']
+        points = profile_info['points']
+        respects = profile_info['respects']
+        data = {'name': name, 'rank': rank, 'completion': completion, 'rank progress': progress, 'points': points, 'respects': respects}
+        return data
 
 
 def ping():

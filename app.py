@@ -60,6 +60,8 @@ async def on_message(message):
     if message.content.startswith('$user'):
         user = message.content.replace('$user ', '')
         data = get_user_info_username(user)
+        response = f"user: {data['name']} \npoints: {data['points']} \nrank: {data['rank']} \nrank progress: {data['rank progress']}% \ncompletion: {data['completion']}%"
+        await message.channel.send(response)
                 
         
         
