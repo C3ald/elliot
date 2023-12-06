@@ -10,5 +10,6 @@ idna==3.6
 multidict==6.0.4
 pythonping==1.1.4
 requests==2.31.0
+tinydb==4.8.0
 urllib3==2.1.0
 yarl==1.9.3

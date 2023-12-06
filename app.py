@@ -1,6 +1,6 @@
 import discord
 import os
-from utils import ping, meme
+from utils import ping, meme, top_100_global
 
 token = open('./token.txt', 'r').read()
 
@@ -43,4 +43,14 @@ async def on_message(message):
         data = meme()
         response = f"here's one from {data['sub']} posted by, {data['op']} \n\n{data['title']} \n {data['preview']}"
         await message.channel.send(response)
+# HTB Stuff
+    if message.content == ('$topusers'):
+        limit = '10'
+        data = top_100_global(limit)
+        response = data
+        await message.channel.send(response)
+        
+                
+        
+        
 client.run(token)
