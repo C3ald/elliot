@@ -1,6 +1,6 @@
 import discord
 import os
-from utils import ping, meme, top_100_global
+from utils import ping, meme, get_htb_top_100
 
 token = open('./token.txt', 'r').read()
 
@@ -45,9 +45,16 @@ async def on_message(message):
         await message.channel.send(response)
 # HTB Stuff
     if message.content == ('$topusers'):
-        limit = '10'
-        data = top_100_global(limit)
-        response = data
+        limit = message.content.replace('$topusers', '')
+        try:
+                limit = message.content.replace(' ', '')
+        except:
+                limit = 5
+        print(limit)
+        if limit == '' or limit == '$topusers':
+                limit = 5
+        data = get_htb_top_100(limit)
+        response = f'obtained the top: {limit} users: \n{data}'
         await message.channel.send(response)
         
                 

@@ -10,9 +10,9 @@ https://documenter.getpostman.com/view/13129365/TVeqbmeq#auth-info-60b37e03-af60
 """
 
 # HTB URLs
-team_url = 'https://www.hackthebox.com/api/v4/team/info/'
-profile_overview = 'https://www.hackthebox.com/api/v4/profile/'
-top_100_global = "https://www.hackthebox.com/api/v4/rankings/users"
+team_url = 'https://app.hackthebox.com/api/v4/team/info/'
+profile_overview = 'https://app.hackthebox.com/api/v4/profile/'
+top_100_global = "https://app.hackthebox.com/api/v4/rankings/users"
 # Misc urls
 meme_url = 'https://meme-api.com/gimme'
 
@@ -52,8 +52,10 @@ def get_htb_top_100(limit):
         """ limit sets a limit for number of retrieved users, like top 30 if limit is set to 30 returns a list of dictionaries"""
         limit = int(limit)
         print(limit)
-        headers = {'Authorization': f'Bearer {HTB_API}'}
+        headers = {'Authorization': f'Bearer {HTB_API}', 'Content-Type': 'application/json'}
         re = r.get(top_100_global, headers=headers)
+        print(re.text)
+        print(re.status_code)
         response = dict(re.json())
         response = response['data']
         response = response[:limit]
