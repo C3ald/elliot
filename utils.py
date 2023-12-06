@@ -15,10 +15,9 @@ top_100_global = "https://www.hackthebox.com/api/v4/rankings/users"
 base_HTB_url = 'https://www.hackthebox.com'
 # Misc urls
 meme_url = 'https://meme-api.com/gimme'
-db.truncate() # for debugging and creation
 # HTB API token
 HTB_API = open('htb_token.txt', 'r').read()
-db.insert({'name': 'Ceald', 'id': 440221})
+
 #q = Query()
 #a = db.search(q.name == 'Ceald')
 #print(a)
