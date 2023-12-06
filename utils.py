@@ -18,16 +18,36 @@ meme_url = 'https://meme-api.com/gimme'
 
 # HTB API token
 HTB_API = open('htb_token.txt', 'r').read()
+db.insert({'name': 'Ceald', 'id': 440221})
+#q = Query()
+#a = db.search(q.name == 'Ceald')
+#print(a)
 
+headers = {'Authorization': f'Bearer {HTB_API}', 'Content-Type': 'wwwlication/json', 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/37.0.2062.94 Chrome/37.0.2062.94 Safari/537.36'}
 
-def update_db(name, id):
-        """ updates the database of ids and names. Returns 1 if user and id exists and will return 0 if database was updated properly"""
-        data = {'name': name, 'id': id}
+def update_db(name, user_id, team=False):
+        """ updates the database of ids and names. Returns 1 if user and id exists and will return 0 if database was updated properly teams can be used as well just put true if it is a team"""
+        data = {'name': name, 'id': user_id, 'team': team}
         if data not in db.all():
                 db.insert(data)
                 return 0
         else:
                 return 1
+
+
+def get_user_info_username(user_name):
+        Info = Query()
+        user_id = db.search(Info.name == user_name)
+        user_id = user_id[-1]
+        user_id = user_id['id']
+        url = profile_overview+str(user_id)
+        print(url)
+        re = r.get(url, headers=headers)
+        response = re.text
+        print(response)
+        
+                
+
 
 def ping():
         """ ping test"""
@@ -52,7 +72,7 @@ def get_htb_top_100(limit):
         """ limit sets a limit for number of retrieved users, like top 30 if limit is set to 30 returns a list of dictionaries"""
         limit = int(limit)
         print(limit)
-        headers = {'Authorization': f'Bearer {HTB_API}', 'Content-Type': 'wwwlication/json'}
+        
         re = r.get(top_100_global, headers=headers)
         print(re.text)
         print(re.status_code)

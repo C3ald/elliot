@@ -1,6 +1,6 @@
 import discord
 import os
-from utils import ping, meme, get_htb_top_100
+from utils import ping, meme, get_htb_top_100, get_user_info_username
 
 token = open('./token.txt', 'r').read()
 
@@ -56,7 +56,10 @@ async def on_message(message):
         data = get_htb_top_100(limit)
         response = f'obtained the top: {limit} users: \n{data}'
         await message.channel.send(response)
-        
+    
+    if message.content.startswith('$user'):
+        user = message.content.replace('$user ', '')
+        data = get_user_info_username(user)
                 
         
         
