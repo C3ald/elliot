@@ -1,6 +1,7 @@
 import discord
 import os
 from utils import ping, meme, get_htb_top_100, get_user_info_username
+import time as t
 
 token = open('./token.txt', 'r').read()
 
@@ -44,18 +45,19 @@ async def on_message(message):
         response = f"here's one from {data['sub']} posted by, {data['op']} \n\n{data['title']} \n {data['preview']}"
         await message.channel.send(response)
 # HTB Stuff
-    if message.content == ('$topusers'):
-        limit = message.content.replace('$topusers', '')
-        try:
-                limit = message.content.replace(' ', '')
-        except:
-                limit = 5
-        print(limit)
+    if message.content.startswith('$topusers'):
+        limit = message.content.replace('$topusers ', '')
         if limit == '' or limit == '$topusers':
-                limit = 5
+            limit = 5
+        print(limit)
         data = get_htb_top_100(limit)
-        response = f'obtained the top: {limit} users: \n{data}'
+        response = f'obtained the top: {limit} users'
         await message.channel.send(response)
+        place = 1
+        for user in data:
+            await message.channel.send(f"""#{place}: {user['country']}'s {user["name"]}, 🩸s:{user["bloods"]}, ♢s:{user["points"]}, and {user['owns']} owns""")
+            place = place + 1
+            t.sleep(0.01)
     
     if message.content.startswith('$user'):
         user = message.content.replace('$user ', '')

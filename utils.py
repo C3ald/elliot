@@ -17,13 +17,13 @@ base_HTB_url = 'https://www.hackthebox.com'
 meme_url = 'https://meme-api.com/gimme'
 # HTB API token
 HTB_API = open('htb_token.txt', 'r').read()
-
+app_token = open('htb_app_token.txt', 'r').read()
 #q = Query()
 #a = db.search(q.name == 'Ceald')
 #print(a)
 
 headers = {'Authorization': f'Bearer {HTB_API}', 'Content-Type': 'wwwlication/json', 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/37.0.2062.94 Chrome/37.0.2062.94 Safari/537.36'}
-
+app_headers = {'Authorization': f'Bearer {app_token}', 'Content-Type': 'wwwlication/json', 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/37.0.2062.94 Chrome/37.0.2062.94 Safari/537.36'}
 def update_db(name, user_id, team=False):
         """ updates the database of ids and names. Returns 1 if user and id exists and will return 0 if database was updated properly teams can be used as well just put true if it is a team"""
         data = {'name': name, 'id': user_id, 'team': team}
@@ -82,22 +82,24 @@ def get_htb_top_100(limit):
         limit = int(limit)
         print(limit)
         
-        re = r.get(top_100_global, headers=headers)
-        print(re.text)
-        print(re.status_code)
+        re = r.get(top_100_global, headers=app_headers)
+        #print(re.text)
+        #print(re.status_code)
         response = dict(re.json())
         response = response['data']
         response = response[:limit]
-        print(response)
+        #print(response)
         formatted_data = []
         for data in response:
                 rank = data['rank']
                 points = data['points']
                 user_id = data['id']
                 name = data['name']
-                country = 'country'
-                total_owns = data['root_owns'] + data['user_owns'] + data['challenge_owns'] + data['fortress'] + data['endgames']
+                country = data['country']
+                print(country)
+                total_owns = data['root_owns'] + data['user_owns'] + data['challenge_owns'] + data['fortress'] + data['endgame']
                 bloods = data['root_bloods'] + data['user_bloods'] + data['challenge_bloods']
-                fd = {'rank': rank, 'points': points, 'id': user_id, 'name': name, 'country': country, 'owns': total_owns, 'bloods': bloods}
+                avatar = base_HTB_url+data['avatar_thumb']
+                fd = {'rank': rank, 'points': points, 'id': user_id, 'name': name, 'country': country, 'owns': total_owns, 'bloods': bloods, 'avatar': avatar}
                 formatted_data.append(fd)
         return formatted_data
