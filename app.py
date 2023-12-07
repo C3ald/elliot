@@ -87,7 +87,7 @@ async def on_message(message):
         
     if message.content.startswith('$help'):
         response = """Command list: \n
-              `$unreleased` gets the unreleased machine list
+              `$unreleased` gets the unreleased machine list\n
               `$user` 'id or username'\n
               `$topusers` 'top number' gets the top number of users ex: '`$topusers 5`' gets the top 5 users\n
               `$hello` 'who to say hello to' \n
