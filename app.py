@@ -76,12 +76,12 @@ async def on_message(message):
     if message.content.startswith('$unreleased'):
         machines = get_unreleased()
         for machine in machines:
-            response = f"""name: {machine['name']}\n
+            response = f"""machine name: {machine['name']}\n
                             {machine['avatar']}\n
                             difficulty: {machine['difficulty']}\n
                             OS: {machine['os']}\n
                             creators: {machine['creators']}\n
-                            release data: {machine['release date']}"""
+                            release data: {machine['release date']}\n\n"""
             await message.channel.send(response)
         
         
