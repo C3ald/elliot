@@ -1,1 +1,1 @@
-{"_default": {"1": {"name": "Ceald", "id": 440221}, "2": {"name": "xct", "id": "13569", "is_team": false}}}
+{"_default": {"1": {"name": "Ceald", "id": 440221, "is_team": false, "is_lab": false}, "2": {"name": "xct", "id": 13569, "is_team": false, "is_lab": false}}}

@@ -13,6 +13,8 @@ team_url = 'https://www.hackthebox.com/api/v4/team/info/'
 profile_overview = 'https://www.hackthebox.com/api/v4/profile/'
 top_100_global = "https://www.hackthebox.com/api/v4/rankings/users"
 base_HTB_url = 'https://www.hackthebox.com'
+active_machine_url = 'https://www.hackthebox.com/api/v4/machine/list'
+unreleased_list = 'https://www.hackthebox.com/api/v4/machine/unreleased'
 # Misc urls
 meme_url = 'https://meme-api.com/gimme'
 # HTB API token
@@ -24,9 +26,9 @@ app_token = open('htb_app_token.txt', 'r').read()
 
 headers = {'Authorization': f'Bearer {HTB_API}', 'Content-Type': 'wwwlication/json', 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/37.0.2062.94 Chrome/37.0.2062.94 Safari/537.36'}
 app_headers = {'Authorization': f'Bearer {app_token}', 'Content-Type': 'wwwlication/json', 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/37.0.2062.94 Chrome/37.0.2062.94 Safari/537.36'}
-def update_db(name, user_id, is_team=False):
+def update_db(name, user_id, is_team=False, is_lab=False):
         """ updates the database of ids and names. Returns 1 if user and id exists and will return 0 if database was updated properly teams can be used as well just put true if it is a team"""
-        data = {'name': name, 'id': user_id, 'is_team': is_team}
+        data = {'name': name, 'id': int(user_id), 'is_team': is_team, 'is_lab': is_lab}
         if data not in db.all():
                 db.insert(data)
                 return 0
@@ -36,11 +38,15 @@ def update_db(name, user_id, is_team=False):
 
 def get_user_info_username(user_name):
         Info = Query()
-        user_id = db.search(Info.name == user_name and Info.is_team == False)
-        user_id = user_id[-1]
-        user_id = user_id['id']
+        user_id = db.search(Info.name == user_name)
+        print(user_id)
+        for user in user_id:
+                if user['name'] == user_name and user['is_team'] == False and user['is_lab'] == False:
+                        user_id = user['id']
+        # print(user_id)
+        # user_id = user_id[-1]
+        # user_id = user_id['id']
         url = profile_overview+str(user_id)
-        print(url)
         re = r.get(url, headers=headers)
         response = dict(re.json())
         profile_info = response['profile']
@@ -57,7 +63,22 @@ def get_user_info_username(user_name):
         data = {'avatar':avatar,'name': name, 'rank': rank, 'completion': completion, 'rank progress': progress, 'points': points, 'respects': respects, 'bloods': bloods, 'global rank': global_ranking}
         return data
 
-
+def get_unreleased():
+        """ Gets the unreleased machine list """
+        re = r.get(unreleased_list, headers=app_headers)
+        j = dict(re.json())
+        machines = j['data']
+        unreleased = []
+        for machine in machines:
+                creator = list(machine['firstCreator'])[-1]['name']
+                co_creators = ''
+                cos = machine['coCreators']
+                for co in cos:
+                        co_creators += ' and ' + co['name']
+                data = {'name': machine['name'], 'id': machine['id'], 'difficulty': machine['difficulty_text'], 'os': machine['os'], 'avatar': base_HTB_url+machine['avatar'],
+                        'creators': f'{creator}{co_creators}', 'release date': machine['release']}
+                unreleased.append(data)
+        return unreleased
 
 def get_user_info_id(user_id):
         """ gets user info based on id and updates the database """
@@ -124,3 +145,4 @@ def get_htb_top_100(limit):
                 fd = {'rank': rank, 'points': points, 'id': user_id, 'name': name, 'country': country, 'owns': total_owns, 'bloods': bloods, 'avatar': avatar}
                 formatted_data.append(fd)
         return formatted_data
+get_unreleased()

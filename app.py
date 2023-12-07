@@ -1,6 +1,6 @@
 import discord
 import os
-from utils import ping, meme, get_htb_top_100, get_user_info_username, get_user_info_id
+from utils import ping, meme, get_htb_top_100, get_user_info_username, get_user_info_id, get_unreleased
 import time as t
 
 token = open('./token.txt', 'r').read()
@@ -73,8 +73,21 @@ async def on_message(message):
             except:
                 response = f"user: {user} not in Elliot's database!"
         await message.channel.send(response)
+    if message.content.startswith('$unreleased'):
+        machines = get_unreleased()
+        for machine in machines:
+            response = f"""name: {machine['name']}\n
+                            {machine['avatar']}\n
+                            difficulty: {machine['difficulty']}\n
+                            OS: {machine['os']}\n
+                            creators: {machine['creators']}\n
+                            release data: {machine['release date']}"""
+            await message.channel.send(response)
+        
+        
     if message.content.startswith('$help'):
         response = """Command list: \n
+              `$unreleased` gets the unreleased machine list
               `$user` 'id or username'\n
               `$topusers` 'top number' gets the top number of users ex: '`$topusers 5`' gets the top 5 users\n
               `$hello` 'who to say hello to' \n
