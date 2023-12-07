@@ -36,7 +36,7 @@ def update_db(name, user_id, is_team=False):
 
 def get_user_info_username(user_name):
         Info = Query()
-        user_id = db.search(Info.name == user_name)
+        user_id = db.search(Info.name == user_name and Info.is_team == False)
         user_id = user_id[-1]
         user_id = user_id['id']
         url = profile_overview+str(user_id)
