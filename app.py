@@ -1,6 +1,6 @@
 import discord
 import os
-from utils import ping, meme, get_htb_top_100, get_user_info_username
+from utils import ping, meme, get_htb_top_100, get_user_info_username, get_user_info_id
 import time as t
 
 token = open('./token.txt', 'r').read()
@@ -61,8 +61,17 @@ async def on_message(message):
     
     if message.content.startswith('$user'):
         user = message.content.replace('$user ', '')
-        data = get_user_info_username(user)
-        response = f"user: {data['name']} \n{data['avatar']}\nbloods 🩸: {data['bloods']} \npoints ♢: {data['points']} \nrank: {data['rank']} \nrank progress: {data['rank progress']}% \ncompletion: {data['completion']}% \nglobal rank 🌐: {data['global rank']}"
+        try:
+            data = get_user_info_username(user)
+            response = f"user: {data['name']} \n{data['avatar']}\nbloods 🩸: {data['bloods']} \npoints ♢: {data['points']} \nrank: {data['rank']} \nrank progress: {data['rank progress']}% \ncompletion: {data['completion']}% \nglobal rank 🌐: {data['global rank']}"
+
+        except:
+            try:
+                data = get_user_info_id(user)
+                response = f"user: {data['name']} \n{data['avatar']}\nbloods 🩸: {data['bloods']} \npoints ♢: {data['points']} \nrank: {data['rank']} \nrank progress: {data['rank progress']}% \ncompletion: {data['completion']}% \nglobal rank 🌐: {data['global rank']}"
+
+            except:
+                response = f"user: {user} not in Elliot's database!"
         await message.channel.send(response)
                 
         

@@ -24,9 +24,9 @@ app_token = open('htb_app_token.txt', 'r').read()
 
 headers = {'Authorization': f'Bearer {HTB_API}', 'Content-Type': 'wwwlication/json', 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/37.0.2062.94 Chrome/37.0.2062.94 Safari/537.36'}
 app_headers = {'Authorization': f'Bearer {app_token}', 'Content-Type': 'wwwlication/json', 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/37.0.2062.94 Chrome/37.0.2062.94 Safari/537.36'}
-def update_db(name, user_id, team=False):
+def update_db(name, user_id, is_team=False):
         """ updates the database of ids and names. Returns 1 if user and id exists and will return 0 if database was updated properly teams can be used as well just put true if it is a team"""
-        data = {'name': name, 'id': user_id, 'team': team}
+        data = {'name': name, 'id': user_id, 'is_team': is_team}
         if data not in db.all():
                 db.insert(data)
                 return 0
@@ -54,6 +54,27 @@ def get_user_info_username(user_name):
         global_ranking = profile_info['ranking']
         avatar = base_HTB_url + profile_info['avatar']
         print(profile_info)
+        data = {'avatar':avatar,'name': name, 'rank': rank, 'completion': completion, 'rank progress': progress, 'points': points, 'respects': respects, 'bloods': bloods, 'global rank': global_ranking}
+        return data
+
+
+
+def get_user_info_id(user_id):
+        """ gets user info based on id and updates the database """
+        url = profile_overview+str(user_id)
+        re = r.get(url, headers=headers)
+        response = dict(re.json())
+        profile_info = response['profile']
+        name = profile_info['name']
+        rank = profile_info['rank']
+        progress = profile_info['current_rank_progress']
+        completion = profile_info['rank_ownership']
+        points = profile_info['points']
+        respects = profile_info['respects']
+        bloods = profile_info['user_bloods'] + profile_info['system_bloods']
+        global_ranking = profile_info['ranking']
+        avatar = base_HTB_url + profile_info['avatar']
+        update_db(name, user_id)
         data = {'avatar':avatar,'name': name, 'rank': rank, 'completion': completion, 'rank progress': progress, 'points': points, 'respects': respects, 'bloods': bloods, 'global rank': global_ranking}
         return data
 
