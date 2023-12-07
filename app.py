@@ -73,7 +73,14 @@ async def on_message(message):
             except:
                 response = f"user: {user} not in Elliot's database!"
         await message.channel.send(response)
-                
+    else:
+        response = """Command list: \n
+              `$user` 'id or username'\n
+              `$topusers` 'top number' gets the top number of users ex: '`$topusers 5`' gets the top 5 users\n
+              `$hello` 'who to say hello to' \n
+              `$meme` gets a meme\n 
+              `$ping` pings google.com"""
+        await message.channel.send(response)
         
         
 client.run(token)
